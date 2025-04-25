@@ -1,31 +1,39 @@
 #include <stdio.h>
 #include "head.h"
 #include "body.c"
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
+#include <string.h>
+#define Nil NULL
 
 int main(void){
     arrayKota dataKota;
-
-    // Alokasi array kota
-    printf("Masukkan jumlah kota: ");
-    alokasiArray(&dataKota);
-
-    // Input nama kota
-    for (int i = 0; i < dataKota.length; i++) {
-        printf("Masukkan nama kota ke-%d: ", i + 1);
-        scanf("%s", dataKota.kota[i].kt);
-        dataKota.kota[i].p = Nil; // Inisialisasi pointer warga ke Nil
-    }
-
-    // Menambahkan warga ke kota
-    char nama[50], domisili[50];
+    int i = 0;
+    char nama[MAX];
+    char kota[MAX];
     char pilihan;
+    banner();
+    printf("\nPROGRAM KEPENDUDUKAN.");
+    printf("\nSELAMAT DATANG DALAM PROGRAM KEPENDUDUKAN");
+    printf("\nMasukkan Jumlah kota : ");
+    alokasiArray(&dataKota);
+    // loop untuk memasukkan nama kota
+    printf("Input nama Kota.\n");
+    while(i < dataKota.length){
+        printf("Input nama kota ke %d : ", i+1);
+        scanf("%99s", dataKota.kota[i].kt);
+        dataKota.kota[i].p = Nil;
+        i++;
+    }
+    // Menambahkan warga ke kota
     do {
         printf("Masukkan nama warga: ");
         scanf("%s", nama);
         printf("Masukkan domisili kota: ");
-        scanf("%s", domisili);
+        scanf("%s", kota);
 
-        addWarga(&dataKota, nama, domisili);
+        addWarga(&dataKota, nama, kota);
 
         printf("Apakah ingin menambahkan warga lagi? (y/n): ");
         scanf(" %c", &pilihan);
@@ -45,5 +53,9 @@ int main(void){
         }
     }
     free(dataKota.kota);
+    // arrayKota dataKota;
+
+    
+
     return 0;
 }

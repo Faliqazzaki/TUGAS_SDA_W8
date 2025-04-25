@@ -20,8 +20,13 @@ typedef struct arrayKota{
     kota *kota;
 }arrayKota;
 
+// MODUL NON-CONTROL
+void banner();
 void alokasiArray(arrayKota *P);
 address alokasi(char *nama);
+void mainProgram();
+
+// MODUL CONTROL
 void addWarga(arrayKota *P, char *nama, char *domisili);
 void printMasyarakat(arrayKota P);
 

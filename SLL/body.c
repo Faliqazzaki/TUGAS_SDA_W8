@@ -31,8 +31,10 @@ void addWarga(arrayKota *P, char *nama, char *domisili){
             i++;
         }
         // terjadi jika tidak ada sebuah kota
+
         if(i >= (*P).length){
             printf("tidak ada kota !!!");
+            return;
         }else{
             // terjadi jika terdapat sebuah kota 
             temp = (*P).kota[i].p;
@@ -47,6 +49,7 @@ void addWarga(arrayKota *P, char *nama, char *domisili){
         }
     }else{
         printf("alokasi gagal !!");
+        return;
     }
 }
 
@@ -73,4 +76,17 @@ void printMasyarakat(arrayKota P){
     }else{
         printf("tidak ada kota dan warga");
     }
+}
+
+void banner(){
+    printf("===============================================================\n");
+    printf("    ___                         _          _____ _      _     \n");
+    printf("   / _ \\                       | |        /  ___| |    | |    \n");
+    printf("  / /_\\ \\_ __ _ __ __ _ _   _  | |_ ___   \\ `--.| |    | |    \n");
+    printf("  |  _  | '__| '__/ _` | | | | | __/ _ \\   `--. \\ |    | |    \n");
+    printf("  | | | | |  | | | (_| | |_| | | || (_) | /\\__/ / |____| |__  \n");
+    printf("  \\_| |_/_|  |_|  \\__,_|\\__, |  \\__\\___/  \\____/\\_____/\\_____/\n");
+    printf("                         __/ |                                \n");
+    printf("                        |___/                                 \n");
+    printf("===============================================================");
 }
