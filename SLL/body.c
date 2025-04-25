@@ -1,5 +1,6 @@
 #include "head.h"
 #include <malloc.h>
+#include <stdio.h>
 #include <string.h>
 #define Nil NULL
 
@@ -78,6 +79,8 @@ void printMasyarakat(arrayKota P){
     }
 }
 
+
+
 void banner(){
     printf("===============================================================\n");
     printf("    ___                         _          _____ _      _     \n");
@@ -89,4 +92,5 @@ void banner(){
     printf("                         __/ |                                \n");
     printf("                        |___/                                 \n");
     printf("===============================================================");
+
 }
