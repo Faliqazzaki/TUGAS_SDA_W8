@@ -55,7 +55,33 @@ int main(void){
     free(dataKota.kota);
     // arrayKota dataKota;
 
-    
+    // Menu hapus warga
+    printf("\nApakah ingin menghapus warga? (y/n): ");
+    scanf(" %c", &pilihan);
+    while (pilihan == 'y' || pilihan == 'Y') {
+        printf("Masukkan nama warga yang ingin dihapus: ");
+        scanf("%s", nama);
+        printf("Masukkan domisili kota: ");
+        scanf("%s", kota);
+
+        deleteWarga(&dataKota, nama, kota);
+
+        printf("Hapus warga lagi? (y/n): ");
+        scanf(" %c", &pilihan);
+    }
+
+    // Menu hapus kota
+    printf("\nApakah ingin menghapus kota? (y/n): ");
+    scanf(" %c", &pilihan);
+    while (pilihan == 'y' || pilihan == 'Y') {
+        printf("Masukkan nama kota yang ingin dihapus: ");
+        scanf("%s", kota);
+
+        deleteKota(&dataKota, kota);
+
+        printf("Hapus kota lagi? (y/n): ");
+        scanf(" %c", &pilihan);
+    }
 
     return 0;
 }
