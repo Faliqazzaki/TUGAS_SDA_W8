@@ -29,7 +29,7 @@ void mainProgram();
 // MODUL CONTROL
 void addWarga(arrayKota *P, char *nama, char *domisili);
 void printMasyarakat(arrayKota P);
-void deleteWarga(Kota *dataKota, char *nama, char *kota);
-void deleteKota(Kota *dataKota, char *kota);
+void deleteWarga(arrayKota *P, char *nama, char *domisili);
+void deleteKota(arrayKota *P, char *namaKota);
 
 #endif
