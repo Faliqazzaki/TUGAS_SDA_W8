@@ -30,6 +30,6 @@ void mainProgram();
 void addWarga(arrayKota *P, char *nama, char *domisili);
 void printMasyarakat(arrayKota P);
 void deleteWarga(arrayKota *dataKota, char *nama, char *domisili);
-void deleteKota(kota *dataKota, char *kota);
+void deleteKota(arrayKota *dataKota, char *namaKota);
 
 #endif
