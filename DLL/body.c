@@ -2,26 +2,61 @@
 #include <malloc.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+#include <stdlib.h>
 #define Nil NULL
 
+//====================
+// MODUL NON-CONTROL
+//====================
 void mainProgram(){
     banner();
     List head; 
     head.first = Nil;
-    addKota(&head, "jawa");
-    addKota(&head, "sunda");
-    addKota(&head, "banten");
-    addWarga(&head, "ajet", "jawa");
-    addWarga(&head, "farel", "jawa");
-    addWarga(&head, "farel", "sunda");
-    addWarga(&head, "farel", "banten");
-    printMasyarakat(head);
-    printf("\n");
-    deleteKota(&head, "sunda");
-    printMasyarakat(head);
-    printf("\n");
-    deleteWarga(&head, "farel", "jawa");
-    printMasyarakat(head);
+    int pilihan;
+    char nama[MAX];
+    char kota[MAX];
+    
+    printf("SELAMAT DATANG DALAM PROGRAM KEPENDUDUKAN\n");
+    printf("Program Kependudukan\n");
+    for(;;){
+        system("cls");
+        printf("List warga daerah : \n");
+        printf("=================================\n");
+        printMasyarakat(head);
+        printf("\n=================================\n");
+        printf("Apa yang akan anda lakukan ? \n1. Tambah Kota\n2. Hapus kota\n3. Tambah data warga\n4. Hapus data warga\n5. Keluar\nMasukkan pilihan anda : ");
+        scanf("%d", &pilihan);
+        system("cls");
+        if(pilihan == 1){
+            printf("Pilihan : Tambah Kota\n");
+            printf("Masukkan nama kota yang ingin ditambahkan ke list : ");
+            scanf("%s", kota);
+            addKota(&head, kota);
+        }else if(pilihan == 2){
+            printf("Pilihan : Hapus Kota\n");
+            printf("Masukkan data kota yang akan dihapus : ");
+            scanf("%s", kota);
+            deleteKota(&head, kota);
+        }else if(pilihan == 3){
+            printf("Pilihan : Tambah data warga\n");
+            printf("Masukkan nama warga yang akan anda tambahkan : ");
+            scanf("%s", nama);
+            printf("Masukkan kota yang akan anda ditambahkan warganya : ");
+            scanf("%s", kota);
+            addWarga(&head, nama, kota);
+        }else if(pilihan == 4){
+            printf("Pilihan : Hapus data warga\n");
+            printf("Masukkan nama warga yang akan anda hapus : ");
+            scanf("%s", nama);
+            printf("Masukkan kota dari data warga yang akan anda hapus : ");
+            scanf("%s", kota);
+            deleteWarga(&head, nama, kota);
+        }else if(pilihan == 5){
+            printf("terimakasih sudah menggunakan program ini.......");
+            break;
+        }
+    }
 }
 
 addressKota alokasiKota(char *nama){
@@ -49,18 +84,18 @@ address alokasi(char *nama){
 
 void banner(){
     printf("===============================================================\n");
-    printf("    ___                         _          _____ _      _     \n");
-    printf("   / _ \\                       | |        /  ___| |    | |    \n");
-    printf("  / /_\\ \\_ __ _ __ __ _ _   _  | |_ ___   \\ `--.| |    | |    \n");
-    printf("  |  _  | '__| '__/ _` | | | | | __/ _ \\   `--. \\ |    | |    \n");
-    printf("  | | | | |  | | | (_| | |_| | | || (_) | /\\__/ / |____| |__  \n");
-    printf("  \\_| |_/_|  |_|  \\__,_|\\__, |  \\__\\___/  \\____/\\_____/\\_____/\n");
-    printf("                         __/ |                                \n");
-    printf("                        |___/                                 \n");
-    printf("===============================================================");
+    printf(" ____  __    __                                      \n");
+    printf("|    \\|  |  |  |      ___ ___ ___ ___ ___ ___ _____ \n");
+    printf("|  |  |  |__|  |__   | . |  _| . | . |  _| .'|     |\n");
+    printf("|____/|_____|_____|  |  _|_| |___|_  |_| |__,|_|_|_|\n");
+    printf("                     |_|         |___|              \n");
+    printf("===============================================================\n");
 
 }
 
+//====================
+// MODUL CONTROL
+//====================
 void addKota(List *P, char *domisili){
     addressKota kota = alokasiKota(domisili);
     addressKota prev = Nil;
@@ -153,7 +188,7 @@ void printMasyarakat(List P){
             tempKota = tempKota->next;
         }
     }else{
-        printf("tidak ada kota dan warga");
+        printf("tidak ada data kota dan warga\n");
     }
 }
 
@@ -173,10 +208,15 @@ void deleteWarga(List *dataKota, char *nama, char *domisili){
             return;
         }
         head_warga = head_kota->p;
-        if(head_warga != Nil){
+        
             while(head_warga->q != Nil && strcmp(head_warga->nm, nama) != 0){
                 prev_warga = head_warga;
                 head_warga = head_warga->q;
+            }
+
+            if(head_warga == Nil){
+                printf("tidak ada list dalam kota ini......");
+                return;
             }
 
             if(prev_warga == Nil){ // Node berada di posisi pertama
@@ -191,10 +231,6 @@ void deleteWarga(List *dataKota, char *nama, char *domisili){
                 free(temp_warga);
                 printf("data %s sudah berhasil dihapus di kota %s.\n", nama, domisili);
             }
-        }else{
-            printf("tidak ada list dalam kota ini......");
-            return;
-        }
     }else{
         printf("tidak ada list kota....");
     }
