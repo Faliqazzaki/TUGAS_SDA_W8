@@ -16,6 +16,12 @@ void mainProgram(){
     addWarga(&head, "farel", "sunda");
     addWarga(&head, "farel", "banten");
     printMasyarakat(head);
+    printf("\n");
+    deleteKota(&head, "sunda");
+    printMasyarakat(head);
+    printf("\n");
+    deleteWarga(&head, "farel", "jawa");
+    printMasyarakat(head);
 }
 
 addressKota alokasiKota(char *nama){
@@ -153,18 +159,88 @@ void printMasyarakat(List P){
 
 
 void deleteWarga(List *dataKota, char *nama, char *domisili){
+    address head_warga = Nil;
+    addressKota head_kota = (*dataKota).first;
+    address prev_warga = Nil;
+    address temp_warga = Nil;
 
+    if(head_kota != Nil){
+        while(head_kota != Nil && strcmp(head_kota->kt, domisili) != 0 ){
+            head_kota = head_kota->next;
+        }
+        if(head_kota == Nil){
+            printf("kota tidak ada dalam list....");
+            return;
+        }
+        head_warga = head_kota->p;
+        if(head_warga != Nil){
+            while(head_warga->q != Nil && strcmp(head_warga->nm, nama) != 0){
+                prev_warga = head_warga;
+                head_warga = head_warga->q;
+            }
+
+            if(prev_warga == Nil){ // Node berada di posisi pertama
+                temp_warga = (*dataKota).first->p;
+                (*dataKota).first->p = (*dataKota).first->p->q;
+                free(temp_warga);
+                printf("data %s sudah berhasil dihapus di kota %s.\n", nama, domisili);
+            }else{
+                temp_warga = head_warga;
+                head_warga = head_warga->q;
+                prev_warga->q = head_warga;
+                free(temp_warga);
+                printf("data %s sudah berhasil dihapus di kota %s.\n", nama, domisili);
+            }
+        }else{
+            printf("tidak ada list dalam kota ini......");
+            return;
+        }
+    }else{
+        printf("tidak ada list kota....");
+    }
 }
 
 void deleteKota(List *dataKota, char *kota){
     addressKota head_kota = (dataKota)->first;
     addressKota prev_kota = Nil;
+    addressKota temp_kota = Nil;
     address temp_warga = Nil;
     address head_warga = Nil;
 
     if(head_kota != Nil){
-        
+        while(head_kota != Nil && strcmp(head_kota->kt, kota) != 0 ){
+            prev_kota = head_kota;
+            head_kota = head_kota->next;
+        }
+
+        if(head_kota == Nil){
+            printf("tidak ada data kota yang bisa dihapus...");
+            return;
+        }
+
+        head_warga = head_kota->p;
+        if(head_warga != Nil){
+            while(head_warga != Nil){
+                temp_warga = head_warga;
+                head_warga = head_warga->q;
+                free(temp_warga);
+            }
+        }
+
+        if(prev_kota == Nil){
+            temp_kota = (*dataKota).first;
+            (*dataKota).first = (*dataKota).first->next;
+            head_kota = (*dataKota).first;
+            free(temp_kota);
+            printf("Kota %s berhasil dihapus\n", kota);
+        }else{
+            temp_kota = head_kota;
+            head_kota = head_kota->next;
+            prev_kota->next = head_kota;
+            free(temp_kota);
+            printf("Kota %s berhasil dihapus\n", kota);
+        }  
     }else{
-        printf("Tidak ada data masyarakat yang bisa dihapus..");
+        printf("Tidak ada list kota yang bisa dihapus..");
     }
 }
