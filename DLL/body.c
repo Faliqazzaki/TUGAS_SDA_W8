@@ -10,7 +10,7 @@
 // MODUL NON-CONTROL
 //====================
 void mainProgram(){
-    banner();
+    
     List head; 
     head.first = Nil;
     int pilihan;
@@ -21,6 +21,7 @@ void mainProgram(){
     printf("Program Kependudukan\n");
     for(;;){
         system("cls");
+        banner();
         printf("List warga daerah : \n");
         printf("=================================\n");
         printMasyarakat(head);
