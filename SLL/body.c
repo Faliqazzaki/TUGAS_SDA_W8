@@ -4,9 +4,89 @@
 #include <string.h>
 #define Nil NULL
 
+void mainProgram(){
+    arrayKota dataKota;
+    int i = 0;
+    char nama[MAX];
+    char kota[MAX];
+    char pilihan;
+
+    banner();
+    printf("\nPROGRAM KEPENDUDUKAN\n");
+    printf("SELAMAT DATANG DALAM PROGRAM KEPENDUDUKAN\n");
+
+    // Alokasi array untuk kota
+    
+    alokasiArray(&dataKota);
+
+    // Input nama kota
+    printf("\nInput nama kota:\n");
+    while (i < dataKota.length) {
+        printf("Input nama kota ke-%d: ", i + 1);
+        scanf("%99s", dataKota.kota[i].kt);
+        dataKota.kota[i].p = Nil;
+        i++;
+    }
+
+    // Menambahkan warga ke kota
+    do {
+        printf("\nMasukkan nama warga: ");
+        scanf("%s", nama);
+        printf("Masukkan domisili kota: ");
+        scanf("%s", kota);
+
+        addWarga(&dataKota, nama, kota);
+
+        printf("Apakah ingin menambahkan warga lagi? (y/n): ");
+        scanf(" %c", &pilihan);
+    } while (pilihan == 'y' || pilihan == 'Y');
+
+    // Cetak daftar masyarakat
+    printf("\nDaftar masyarakat:\n");
+    printMasyarakat(dataKota);
+
+    // Menu hapus warga
+    do {
+        printf("\nApakah ingin menghapus warga? (y/n): ");
+        scanf(" %c", &pilihan);
+        if (pilihan == 'y' || pilihan == 'Y') {
+            printf("Masukkan nama warga yang ingin dihapus: ");
+            scanf("%s", nama);
+            printf("Masukkan domisili kota: ");
+            scanf("%s", kota);
+
+            deleteWarga(&dataKota, nama, kota);
+        }
+    } while (pilihan == 'y' || pilihan == 'Y');
+
+    // Cetak daftar masyarakat setelah penghapusan
+    printf("\nDaftar masyarakat setelah penghapusan:\n");
+    printMasyarakat(dataKota);
+
+    // Bebaskan memori yang dialokasikan
+    for (int i = 0; i < dataKota.length; i++) {
+        address temp = dataKota.kota[i].p;
+        while (temp != Nil) {
+            address toFree = temp;
+            temp = temp->q;
+            free(toFree);
+        }
+    }
+    free(dataKota.kota);
+
+    printf("\nProgram selesai. Terima kasih!\n");
+}
+
 void alokasiArray(arrayKota *P){
-    scanf("%d", &(*P).length);
-    (*P).kota = malloc(sizeof(kota) * (*P).length);
+    do{
+        if((*P).length < 5){
+            printf("panjang array masih kurang !!!");
+        }
+        printf("\nMasukkan jumlah kota: ");
+        scanf("%d", &(*P).length);
+        (*P).kota = malloc(sizeof(kota) * (*P).length);
+    } while ((*P).length < 5);
+
 }
 
 address alokasi(char *nama){
@@ -79,8 +159,6 @@ void printMasyarakat(arrayKota P){
     }
 }
 
-
-
 void banner(){
     printf("===============================================================\n");
     printf("    ___                         _          _____ _      _     \n");
@@ -93,4 +171,55 @@ void banner(){
     printf("                        |___/                                 \n");
     printf("===============================================================");
 
+}
+
+void deleteWarga(arrayKota *dataKota, char *nama, char *domisili){
+    int i = 0;
+    address first = Nil;
+    address temp = Nil;
+    address prev = Nil;
+
+    if (dataKota == NULL || nama == NULL || domisili == NULL) {
+        printf("Input tidak valid!\n");
+        return;
+    }
+
+    while(( (i < dataKota->length) && strcmp(dataKota->kota[i].kt, domisili) != 0)){
+        i++;
+    }
+
+    if(i >= dataKota->length){
+        printf("kota tidak ditemukan");
+        return;
+    }
+
+    first = dataKota->kota[i].p;
+    if(first != Nil){
+        if((strcmp(dataKota->kota[i].p->nm, nama) == 0)){ //kondisi untuk node berada di posisi pertama
+            temp = dataKota->kota[i].p;
+            dataKota->kota[i].p = dataKota->kota[i].p->q;
+            temp->q = Nil;
+            free(temp);
+        }else{
+            while(first != Nil){ //loop untuk node tidak di pertama, bisa ditengah atau diakhir
+                prev = first;
+                first = first->q;
+                if(strcmp(first->nm, nama) == 0){ // kondisi untuk menghapus data di tenganh
+                    temp = first;
+                    first = first->q;
+                    prev->q = first;
+                    free(temp);
+                }
+            }
+        }
+        printf("penghapusan warga berhasil di kota %s", dataKota->kota[i].kt);
+        return;
+    }else{
+        printf("tidak ada warga yang bisa dihapus di kota %s ", dataKota->kota[i].kt);
+        return;
+    }
+}
+
+void deleteKota(kota *dataKota, char *kota){
+    
 }

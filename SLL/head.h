@@ -20,16 +20,16 @@ typedef struct arrayKota{
     kota *kota;
 }arrayKota;
 
-// MODUL NON-CONTROL
+// MODUL NON-CONTROL NODE
 void banner();
 void alokasiArray(arrayKota *P);
 address alokasi(char *nama);
 void mainProgram();
 
-// MODUL CONTROL
+// MODUL CONTROL NODE
 void addWarga(arrayKota *P, char *nama, char *domisili);
 void printMasyarakat(arrayKota P);
-void deleteWarga(arrayKota *P, char *nama, char *domisili);
-void deleteKota(arrayKota *P, char *namaKota);
+void deleteWarga(arrayKota *dataKota, char *nama, char *domisili);
+void deleteKota(kota *dataKota, char *kota);
 
 #endif
