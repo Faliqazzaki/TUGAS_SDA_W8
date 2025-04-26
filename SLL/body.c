@@ -4,91 +4,113 @@
 #include <string.h>
 #define Nil NULL
 
-void mainProgram(){
+void mainProgram() {
     arrayKota dataKota;
     int i = 0;
     char nama[MAX];
     char kota[MAX];
     char pilihan;
+    int menu;
 
     banner();
     printf("\nPROGRAM KEPENDUDUKAN\n");
     printf("SELAMAT DATANG DALAM PROGRAM KEPENDUDUKAN\n");
 
-    // Alokasi array untuk kota
-    alokasiArray(&dataKota);
+    for (;;) {
+        printf("\n");
+        printf("====================[ PILIHAN PROGRAM ]====================\n");
+        printf("1. Tambah Kota\n");
+        printf("2. Tambah Warga\n");
+        printf("3. Cetak Daftar Masyarakat\n");
+        printf("4. Hapus Warga\n");
+        printf("5. Hapus Kota\n");
+        printf("6. Keluar\n");
+        printf("Pilihan Anda: ");
+        printf("Masukkan pilihan Anda: ");
+        scanf("%d", &menu);
 
-    // Input nama kota
-    printf("\nInput nama kota:\n");
-    while (i < dataKota.length) {
-        printf("Input nama kota ke-%d: ", i + 1);
-        scanf("%99s", dataKota.kota[i].kt);
-        dataKota.kota[i].p = Nil;
-        i++;
+        if (menu == 1) {
+            alokasiArray(&dataKota);
+            // Input nama kota
+            while (i < dataKota.length) {
+                printf("Input nama kota ke-%d: ", i + 1);
+                scanf("%99s", dataKota.kota[i].kt);
+                dataKota.kota[i].p = Nil;
+                i++;
+            }
+        }
+        else if (menu == 2) { 
+            // Menambahkan warga ke kota
+            do {
+                printf("\nMasukkan nama warga: ");
+                scanf("%s", nama);
+                printf("Masukkan domisili kota: ");
+                scanf("%s", kota);
+
+                addWarga(&dataKota, nama, kota);
+
+                printf("Apakah ingin menambahkan warga lagi? (y/n): ");
+                scanf(" %c", &pilihan);
+            } while (pilihan == 'y' || pilihan == 'Y');
+        } 
+        else if (menu == 3) {
+            // Cetak daftar masyarakat
+            printf("\nDaftar masyarakat:\n");
+            printMasyarakat(dataKota);
+        }
+        else if (menu == 4) { 
+            // Menu hapus warga
+            do {
+                printf("\nApakah ingin menghapus warga? (y/n): ");
+                scanf(" %c", &pilihan);
+                if (pilihan == 'y' || pilihan == 'Y') {
+                    printf("Masukkan nama warga yang ingin dihapus: ");
+                    scanf("%s", nama);
+                    printf("Masukkan domisili kota: ");
+                    scanf("%s", kota);
+
+                    deleteWarga(&dataKota, nama, kota);
+                }
+            } while (pilihan == 'y' || pilihan == 'Y');
+
+            printf("\nDaftar masyarakat setelah penghapusan:\n");
+            printMasyarakat(dataKota);
+        } 
+        else if (menu == 5) {
+            // Menu hapus kota
+            do {
+                printf("\nApakah ingin menghapus kota? (y/n): ");
+                scanf(" %c", &pilihan);
+                if (pilihan == 'y' || pilihan == 'Y') {
+                    printf("Masukkan nama kota yang ingin dihapus: ");
+                    scanf("%s", kota);
+                    deleteKota(&dataKota, kota);
+                }
+            } while (pilihan == 'y' || pilihan == 'Y');
+
+            printf("\nDaftar masyarakat setelah penghapusan kota:\n");
+            printMasyarakat(dataKota);
+        } 
+        else if (menu == 6) {
+            // Keluar program
+            printf("\nProgram selesai. Terima kasih!\n");
+
+            // Bebaskan memori
+            for (int i = 0; i < dataKota.length; i++) {
+                address temp = dataKota.kota[i].p;
+                while (temp != Nil) {
+                    address toFree = temp;
+                    temp = temp->q;
+                    free(toFree);
+                }
+            }
+            free(dataKota.kota);
+            return; // Keluar dari mainProgram
+        } 
+        else {
+            printf("Pilihan tidak valid. Silakan coba lagi.\n");
+        }
     }
-
-    // Menambahkan warga ke kota
-    do {
-        printf("\nMasukkan nama warga: ");
-        scanf("%s", nama);
-        printf("Masukkan domisili kota: ");
-        scanf("%s", kota);
-
-        addWarga(&dataKota, nama, kota);
-
-        printf("Apakah ingin menambahkan warga lagi? (y/n): ");
-        scanf(" %c", &pilihan);
-    } while (pilihan == 'y' || pilihan == 'Y');
-
-    // Cetak daftar masyarakat
-    printf("\nDaftar masyarakat:\n");
-    printMasyarakat(dataKota);
-
-    // Menu hapus warga
-    do {
-        printf("\nApakah ingin menghapus warga? (y/n): ");
-        scanf(" %c", &pilihan);
-        if (pilihan == 'y' || pilihan == 'Y') {
-            printf("Masukkan nama warga yang ingin dihapus: ");
-            scanf("%s", nama);
-            printf("Masukkan domisili kota: ");
-            scanf("%s", kota);
-
-            deleteWarga(&dataKota, nama, kota);
-        }
-    } while (pilihan == 'y' || pilihan == 'Y');
-
-    // Cetak daftar masyarakat setelah penghapusan
-    printf("\nDaftar masyarakat setelah penghapusan:\n");
-    printMasyarakat(dataKota);
-
-    // Menu hapus kota
-    do {
-        printf("\nApakah ingin menghapus kota? (y/n): ");
-        scanf(" %c", &pilihan);
-        if (pilihan == 'y' || pilihan == 'Y') {
-            printf("Masukkan nama kota yang ingin dihapus: ");
-            scanf("%s", kota);
-            deleteKota(&dataKota, kota);
-        }
-    } while (pilihan == 'y' || pilihan == 'Y');
-
-    // Cetak daftar masyarakat setelah penghapusan kota
-    printf("\nDaftar masyarakat setelah penghapusan kota:\n");
-    printMasyarakat(dataKota);
-
-    // Bebaskan memori yang dialokasikan
-    for (int i = 0; i < dataKota.length; i++) {
-        address temp = dataKota.kota[i].p;
-        while (temp != Nil) {
-            address toFree = temp;
-            temp = temp->q;
-            free(toFree);
-        }
-    }
-    free(dataKota.kota);
-
-    printf("\nProgram selesai. Terima kasih!\n");
 }
 
 void alokasiArray(arrayKota *P){
